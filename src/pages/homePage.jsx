@@ -1,66 +1,22 @@
-import { useState } from "react";
 import styles from "../lib/styles.js";
 
-const features = [
-  {
-    icon: "🎨",
-    title: "Desain Logo Otomatis",
-    desc: "Buat logo profesional hanya dalam beberapa klik tanpa skill desain.",
-  },
-  {
-    icon: "📱",
-    title: "Template Media Sosial",
-    desc: "Ratusan template siap pakai untuk konten Instagram, TikTok, dan lainnya.",
-  },
-  {
-    icon: "🖌️",
-    title: "Panduan Warna Brand",
-    desc: "Dapatkan palet warna yang konsisten dan profesional untuk brand kamu.",
-  },
-  {
-    icon: "📄",
-    title: "Brand Kit Lengkap",
-    desc: "Unduh semua aset brand dalam satu paket siap pakai kapan saja.",
-  },
-];
+import {
+  features,
+  steps,
+  testimonials,
+  stats,
+} from "../data/data";
 
-const steps = [
-  { num: "1", title: "Isi Informasi Brand", desc: "Ceritakan nama, bidang usaha, dan karakter brand kamu." },
-  { num: "2", title: "Pilih Gaya Desain", desc: "Pilih dari berbagai pilihan gaya yang sesuai selera kamu." },
-  { num: "3", title: "Unduh Brand Kit", desc: "Brand kamu siap! Unduh semua aset dalam hitungan detik." },
-];
+import FeatureCard from "../components/FeatureCard";
+import StepCard from "../components/StepCard";
+import TestimonialCard from "../components/TestimonialCard";
 
-const testimonials = [
-  { initials: "SR", name: "Sari Rahayu", role: "Pemilik Toko Kue", text: "brandku bikin usaha kue rumahan saya terlihat jauh lebih profesional. Prosesnya cepat banget!" },
-  { initials: "BW", name: "Budi Wicaksono", role: "Freelancer Digital", text: "Akhirnya bisa punya brand yang kelihatan mahal tanpa harus bayar desainer mahal. Recommended!" },
-  { initials: "DL", name: "Dewi Lestari", role: "Content Creator", text: "Template media sosialnya keren-keren. Feed Instagram saya jadi rapi dan konsisten sekarang." },
-];
-
-const stats = [
-  { num: "10.000+", label: "brand dibuat" },
-  { num: "5.000+", label: "pengguna aktif" },
-  { num: "4.9 ★", label: "rating pengguna" },
-  { num: "100%", label: "puas dijamin" },
-];
-
-const MAX_CLICKS = 3;
-
-export default function HomePage({ navigate }) {
-  const [clickCount, setClickCount] = useState(0);
-  const isGone = clickCount >= MAX_CLICKS;
-  const remaining = MAX_CLICKS - clickCount;
-
-  const handleCtaClick = () => {
-    if (!isGone) setClickCount((c) => c + 1);
-  };
-
-  const ctaLabel =
-    clickCount === 0
-      ? "Mulai Gratis ↗"
-      : clickCount === 1
-      ? `Serius nih? (${remaining - 1}x lagi)`
-      : `Yakin banget? (${remaining - 1}x lagi)`;
-
+export default function HomePage({
+  clickCount,
+  isGone,
+  ctaLabel,
+  handleCtaClick,
+}) {
   return (
     <div style={styles.page}>
       {/* NAV */}
@@ -117,11 +73,10 @@ export default function HomePage({ navigate }) {
         <p style={styles.sectionSub}>semua yang kamu butuhkan untuk membangun brand yang kuat</p>
         <div style={styles.featuresGrid}>
           {features.map((f) => (
-            <div key={f.title} style={styles.featureCard}>
-              <div style={styles.featureIcon}>{f.icon}</div>
-              <h3 style={styles.featureTitle}>{f.title}</h3>
-              <p style={styles.featureDesc}>{f.desc}</p>
-            </div>
+            <FeatureCard
+              key={f.title}
+              feature={f}
+            />
           ))}
         </div>
       </section>
@@ -132,12 +87,11 @@ export default function HomePage({ navigate }) {
         <p style={styles.sectionSub}>3 langkah mudah untuk punya brand sendiri</p>
         <div style={styles.steps}>
           {steps.map((s, i) => (
-            <div key={s.num} style={styles.step}>
-              <div style={styles.stepNum}>{s.num}</div>
-              {i < steps.length - 1 && <div style={styles.stepLine} />}
-              <h3 style={styles.stepTitle}>{s.title}</h3>
-              <p style={styles.stepDesc}>{s.desc}</p>
-            </div>
+            <StepCard
+              key={s.num}
+              step={s}
+              isLast={i === steps.length - 1}
+            />
           ))}
         </div>
       </section>
@@ -148,17 +102,10 @@ export default function HomePage({ navigate }) {
         <p style={styles.sectionSub}>ribuan pemilik bisnis sudah mempercayai brandku</p>
         <div style={styles.testiGrid}>
           {testimonials.map((t) => (
-            <div key={t.name} style={styles.testiCard}>
-              <div style={styles.stars}>★★★★★</div>
-              <p style={styles.testiText}>"{t.text}"</p>
-              <div style={styles.testiAuthor}>
-                <div style={styles.avatar}>{t.initials}</div>
-                <div>
-                  <div style={styles.authorName}>{t.name}</div>
-                  <div style={styles.authorRole}>{t.role}</div>
-                </div>
-              </div>
-            </div>
+            <TestimonialCard
+              key={t.name}
+              testimonial={t}
+            />
           ))}
         </div>
       </section>
